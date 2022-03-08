@@ -5,22 +5,35 @@ import {
   TextInput,
   TouchableHighlight,
   View,
+  TouchableWithoutFeedback
 } from 'react-native';
-import Loader from '../component/Loader'
+import {Loader} from '../component'
 import {connect} from 'react-redux'
 import {COLORS} from '../constants';
-import {setToast, register} from '../store/actions'
-const Signup = () => {
-    const [email, setEmail] = useState('');
+import {setToast,signup} from '../store/actions'
+
+const Signup = (props) => {
+ 
+  const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-  return (
+    const [confirmPassword, setconfirmPassword] = useState('');
+ 
+const handleSubmit=()=>{
+  console.log('signup')
+}
+
+    return (
     <View style={styles.container}>
-    {props.loader && <Loader/> }
+   
+    {props.isLoading && <Loader/> }
+   
     <Text style={styles.h1}>Create Account</Text>
+   
     <Text style={styles.caption}>
       Don't have an account create now it will take less then two minutes:
       Sign in to enjoy the app now!
     </Text>
+   
     <TextInput
       keyboardType={'email-address'}
       style={styles.textInput}
@@ -47,12 +60,12 @@ const Signup = () => {
       value={confirmPassword}
       onChangeText={val => setconfirmPassword(val)}
     />
-    <TouchableHighlight onPress={handleAuth} style={styles.button}>
+    <TouchableHighlight onPress={handleSubmit} style={styles.button}>
       <Text style={styles.buttonText}>Create Account</Text>
     </TouchableHighlight>
 
      
-     <TouchableWithoutFeedback onPress={()=>{ }}> 
+     <TouchableWithoutFeedback onPress={()=>props.navigation.navigate('login')}> 
         <Text style={styles.bottomText}>Already have an acount ? <Text style={{fontWeight:'bold'}}>Sign in</Text></Text>
       </TouchableWithoutFeedback>
      
@@ -61,7 +74,14 @@ const Signup = () => {
   )
 }
 
-export default Signup
+const mapStateToProps=(props)=>{
+  return{
+    isLoading:props.user.isLoading,
+    
+  }
+}
+
+export default  connect(mapStateToProps,{setToast, signup})(Signup)
 
 const styles = StyleSheet.create({
     container: {

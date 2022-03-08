@@ -5,7 +5,7 @@ const initialState = {
 	config: {}
 }
 
-const toastReducer = (toast = initialState, action) => {
+ export const toastReducer = (toast = initialState, action) => {
 	switch (action.type) {
 		case types.SHOW_TOAST:
 			return { ...toast, isToastShowing: true, config: action.payload }
@@ -16,4 +16,3 @@ const toastReducer = (toast = initialState, action) => {
 	}
 
 }
-export default toastReducer

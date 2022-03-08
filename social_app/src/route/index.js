@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { navigationRef, isReadyRef } from './rootNavigation';
-import { Toast } from '../components';
+import { Toast } from '../component';
 import {connect} from 'react-redux'
 import {clearToast} from '../store/actions'
 
@@ -14,12 +13,7 @@ const Stack = createStackNavigator();
 class AppNavigatior extends Component {
     render() {
         return (
-            <NavigationContainer
-                ref={navigationRef}
-                onReady={() => {
-                    isReadyRef.current = true
-                }}
-            >
+            <NavigationContainer>
                  {this.props.isToastShowing && <Toast 
                     {...this.props.toastConfig} 
                     isToastShowing={this.props.isToastShowing}
@@ -31,7 +25,7 @@ class AppNavigatior extends Component {
                     backgroundColor="transparent"
                 />
                 <Stack.Navigator
-                    initialRouteName={'splash'}
+                    initialRouteName={'s'}
                 >
                     {
                         stackRouteList.map(((item, index) => {

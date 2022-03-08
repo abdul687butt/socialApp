@@ -5,17 +5,25 @@ import {
   TextInput,
   TouchableHighlight,
   View,
+  TouchableWithoutFeedback
 } from 'react-native';
-import Loader from '../component/Loader'
+import {Loader} from '../component'
 import {connect} from 'react-redux'
 import {COLORS} from '../constants';
-import {setToast, register} from '../store/actions'
-const Signup = () => {
-    const [email, setEmail] = useState('');
+import {setToast, login} from '../store/actions'
+
+const Login = (props) => {
+    
+  const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+  const handleSubmit=()=>{
+
+  }
+
   return (
     <View style={styles.container}>
-    {props.loader && <Loader/> }
+    {props.isLoading && <Loader/> }
     <Text style={styles.h1}>Login</Text>
     
     <TextInput
@@ -37,22 +45,27 @@ const Signup = () => {
     />
 
   
-    <TouchableHighlight onPress={handleAuth} style={styles.button}>
+    <TouchableHighlight  onPress={handleSubmit} style={styles.button}>
       <Text style={styles.buttonText}>Sign In</Text>
     </TouchableHighlight>
 
      
-     <TouchableWithoutFeedback onPress={()=>{ }}> 
-        <Text style={styles.bottomText}>Don't have an acount ? <Text style={{fontWeight:'bold'}}>Create now</Text></Text>
+     <TouchableWithoutFeedback onPress={()=>props.navigation.navigate('signup')}> 
+        <Text style={styles.bottomText}>{"Don't have an acount ? "}<Text style={{fontWeight:'bold'}}>Create now</Text></Text>
       </TouchableWithoutFeedback>
      
         
-  </View>
-  )
-}
-
-export default Signup
-
+  </View> 
+  )}
+  const mapStateToProps=(props)=>{
+    return{
+      isLoading:props.user.isLoading,
+      
+    }
+  }
+  
+  export default  connect(mapStateToProps,{setToast, login})(Login)
+  
 const styles = StyleSheet.create({
     container: {
       flex: 1,

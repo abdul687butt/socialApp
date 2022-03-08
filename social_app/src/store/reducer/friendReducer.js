@@ -6,7 +6,7 @@ const initialState = {
     friendRequestList:[]
 }
 
-const friendReducer = (state = initialState, action) => {
+export const friendReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case types.SEND_FRIEND_REQUEST.start:
 			return { ...state, isLoading:true }
@@ -50,8 +50,7 @@ const friendReducer = (state = initialState, action) => {
         case types.SEARCH_FRIENDS.failed:
             return{...state, isLoading:false}    		
 		default:
-			return toast
+			return state
 	}
 
 }
-export default friendReducer

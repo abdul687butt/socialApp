@@ -8,7 +8,7 @@ const initialState = {
 
 }
 
-const userReducer = (state = initialState, action) => {
+export const userReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case types.SIGNUP.start:
 			return { ...state, isLoading:true }
@@ -35,8 +35,7 @@ const userReducer = (state = initialState, action) => {
 		case types.LOGOUT.success:
 			return { ...state, id:'', token:'',user: {}}
 		default:
-			return toast
+			return state
 	}
 
 }
-export default userReducer
