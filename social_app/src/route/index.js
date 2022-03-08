@@ -25,7 +25,7 @@ class AppNavigatior extends Component {
                     backgroundColor="transparent"
                 />
                 <Stack.Navigator
-                    initialRouteName={'s'}
+                    initialRouteName={'splash'}
                 >
                     {
                         stackRouteList.map(((item, index) => {
