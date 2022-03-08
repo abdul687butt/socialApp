@@ -3,7 +3,7 @@ import {
 	StyleSheet
 	, Text, View, Platform, TouchableHighlight
 } from 'react-native';
-import { ICONS, COLORS, getFont, wp, hp } from '../../constants';
+import { ICONS, COLORS,  wp, hp } from '../../constants';
 import * as Animatable from 'react-native-animatable';
 
 export const Toast = (props) => {
@@ -52,8 +52,8 @@ export const Toast = (props) => {
 			borderRadius: 10,
 			backgroundColor:
 				status === 'success' ? COLORS.green :
-					status === 'error' ? COLORS.tomato :
-						status === 'warning' ? COLORS.tomato :
+					status === 'error' ? COLORS.danger :
+						status === 'warning' ? COLORS.danger :
 							status === 'info' ? COLORS.info : COLORS.black,
 			paddingHorizontal: '4%',
 			justifyContent: 'center',
@@ -65,7 +65,7 @@ export const Toast = (props) => {
 		},
 		_icon: { marginRight: '3%', marginTop: '2%', flex: 0.15, alignItems: 'center' },
 		message: {
-			...getFont('OpenSans_m_15'), color: COLORS.white, textTransform: 'capitalize', lineHeight: 18, letterSpacing: 0.16
+			fontFamily:'OpenSans-Medium', fontSize:15, color: COLORS.white, textTransform: 'capitalize', lineHeight: 18, letterSpacing: 0.16
 		},
 		_message: { flex: 0.9, paddingVertical: '4%' }
 	});

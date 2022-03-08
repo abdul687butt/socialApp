@@ -21,6 +21,8 @@ const styles = StyleSheet.create({
         flex:1,
         justifyContent:'center',
         alignItems:'center',
-        height:hp(100)
+        height:hp(100),
+        zIndex:1000,
+        backgroundColor:'rgba(255,255,255,0.6)'
     }
 })

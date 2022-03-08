@@ -17,5 +17,7 @@ export const types={
     REJECT_FRIEND_REQUEST: manageActionType('REJECT_FRIEND_REQUEST'),
     SEARCH_FRIENDS: manageActionType('SEARCH_FRIENDS'),
     GET_PROFILE: manageActionType('GET_PROFILE'),
+    SHOW_TOAST:'SHOW_TOAST',
+    HIDE_TOAST:'HIDE_TOAST'
 
 }
