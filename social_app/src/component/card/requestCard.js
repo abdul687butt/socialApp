@@ -1,9 +1,12 @@
 import { StyleSheet, Text, Touchable, TouchableHighlight, View } from 'react-native'
 import React from 'react'
 import { COLORS, hp, wp } from '../../constants'
+import { connect } from 'react-redux'
+import { sendFriendRequest, acceptFriendRequest, RejectFriendRequest } from '../../store/actions'
 
-const RequestCard = ({item,index, type}) => {
-    const{user_givenname,user_familyname, user_email}= item
+const RequestCard = (props) => {
+    const {item,index, type}=props
+    const{user_givenname,user_familyname, user_id, user_email}= item
   return (
     <View key={index} style={styles.card}>
         <View style={styles.avatar}>
@@ -15,15 +18,15 @@ const RequestCard = ({item,index, type}) => {
             <Text style={styles.txt}>{user_email}</Text>
             <View style={styles.btnView}>
                 
-                {type==="send" && <TouchableHighlight style={[styles.btn, type==="send" && {width:'80%'}]}>
+                {type==="send" && <TouchableHighlight onPress={()=>props.sendFriendRequest(user_id)} style={[styles.btn, type==="send" && {width:'80%'}]}>
                     <Text style={styles.btnText}>Send Request</Text>
                  </TouchableHighlight>}
 
-               {type!=="send" && <TouchableHighlight style={styles.btn}>
+               {type!=="send" && <TouchableHighlight  onPress={()=>props.acceptFriendRequest(user_id)} style={styles.btn}>
                     <Text style={styles.btnText}>Accept</Text>
                  </TouchableHighlight>}
                
-                {type!=="send" && <TouchableHighlight style={[styles.btn, {backgroundColor:COLORS.danger}]}>
+                {type!=="send" && <TouchableHighlight onPress={()=>props.RejectFriendRequest(user_id)} style={[styles.btn, {backgroundColor:COLORS.danger}]}>
                     <Text style={styles.btnText}>Reject</Text>
                  </TouchableHighlight>}
             </View>
@@ -33,7 +36,9 @@ const RequestCard = ({item,index, type}) => {
 
 }
 
-export default RequestCard
+
+
+export default connect(null, {sendFriendRequest, acceptFriendRequest, RejectFriendRequest})( RequestCard)
 
 const styles = StyleSheet.create({
 

@@ -1,6 +1,7 @@
 import { types } from "../actionTypes"
 import {httpRequest} from '../../config'
 import { store } from ".."
+import { setToast } from "./toastAction"
 
 export const sendFriendRequest=(id, cb)=> async dispatch=>{
     try {
@@ -17,11 +18,23 @@ export const sendFriendRequest=(id, cb)=> async dispatch=>{
             dispatch(setToast('success','Friend Request sent successfully'))
             cb&& cb()
         
-        }else{
+        }
+        
+        else{
             dispatch({type:types.SEND_FRIEND_REQUEST.failed})
+            
         }
     } catch (error) {
         dispatch({type:types.SEND_FRIEND_REQUEST.failed})
+        if(error.message.indexOf('403') !== -1){        
+            dispatch(setToast('warning','Friend Request Already Sent, Please check friend request list'))
+        }
+        
+        
+        else{
+            dispatch(setToast('error','Server Error'))
+        }
+        console.log(error.code)
     }
 }
 export const getFriendRequest=(cb)=> async dispatch=>{
@@ -54,17 +67,20 @@ export const acceptFriendRequest=(id, cb)=> async dispatch=>{
         const headers={'X-Authorization':token}
 
         const res= await httpRequest.post(`/user/${id}`,{}, {headers})
-
-        if( res.status===201){
+        console.log("res=======",res)
+        if( res.status===200){
             dispatch({type:types.ACCEPTS_FRIEND_REQUEST.success})
             dispatch(setToast('success','Congrats! you have a new friend'))
             cb&& cb()
         
         }else{
             dispatch({type:types.ACCEPTS_FRIEND_REQUEST.failed})
+            dispatch(setToast('error',res))
         }
     } catch (error) {
         dispatch({type:types.ACCEPTS_FRIEND_REQUEST.failed})
+        dispatch(setToast('error',error.message))
+        console.log("eror===============",error)
     }
 }
 
