@@ -2,7 +2,7 @@ import { StyleSheet, Text, Touchable, TouchableHighlight, View } from 'react-nat
 import React from 'react'
 import { COLORS, hp, wp } from '../../constants'
 
-const RequestCard = ({item,index}) => {
+const RequestCard = ({item,index, type}) => {
     const{first_name,last_name, email}= item
   return (
     <View key={index} style={styles.card}>
@@ -14,12 +14,18 @@ const RequestCard = ({item,index}) => {
             <Text style={styles.title}>{first_name} {last_name}</Text>
             <Text style={styles.txt}>{email}</Text>
             <View style={styles.btnView}>
-                <TouchableHighlight style={styles.btn}>
+                
+                {type==="send" && <TouchableHighlight style={[styles.btn, type==="send" && {width:'80%'}]}>
+                    <Text style={styles.btnText}>Send Request</Text>
+                 </TouchableHighlight>}
+
+               {type!=="send" && <TouchableHighlight style={styles.btn}>
                     <Text style={styles.btnText}>Accept</Text>
-                 </TouchableHighlight>
-                 <TouchableHighlight style={[styles.btn, {backgroundColor:COLORS.danger}]}>
+                 </TouchableHighlight>}
+               
+                {type!=="send" && <TouchableHighlight style={[styles.btn, {backgroundColor:COLORS.danger}]}>
                     <Text style={styles.btnText}>Reject</Text>
-                 </TouchableHighlight>
+                 </TouchableHighlight>}
             </View>
         </View>
     </View>
@@ -58,6 +64,7 @@ const styles = StyleSheet.create({
     },
     title:{
         fontSize:18,
+        textTransform:"capitalize",
         color:COLORS.black,
         fontFamily:'Poppins-Regular',
     },
@@ -68,11 +75,13 @@ const styles = StyleSheet.create({
     },
     btnView:{
         flexDirection:'row',
+       
     },
     btn:{
         backgroundColor:COLORS.primary,
         marginRight:10,
         height:40,
+        marginTop:10,
         alignItems:'center',
         justifyContent:'center',
         width:wp(20),

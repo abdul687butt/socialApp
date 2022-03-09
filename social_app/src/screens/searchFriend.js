@@ -7,6 +7,17 @@ import RequestCard from '../component/card/requestCard'
 
 const SearchFriends = () => {
   const [searchText, setsearchText] = useState('')
+  const [searchResult, setsearchResult] = useState([
+    {first_name:'robert',id:1, last_name:'William', email:'robertWilliam@gmail.com'},
+    {first_name:'robert',id:2, last_name:'William', email:'robertWilliam@gmail.com'},
+    {first_name:'robert',id:3, last_name:'William', email:'robertWilliam@gmail.com'},
+    {first_name:'robert', id:4,last_name:'William', email:'robertWilliam@gmail.com'},
+    {first_name:'robert',id:1, last_name:'William', email:'robertWilliam@gmail.com'},
+    {first_name:'robert',id:2, last_name:'William', email:'robertWilliam@gmail.com'},
+    {first_name:'robert',id:3, last_name:'William', email:'robertWilliam@gmail.com'},
+    {first_name:'robert', id:4,last_name:'William', email:'robertwilliam@gmail.com'},
+  ])
+  const [friendReuestList, setfriendReuestList] = useState([])
   let data=[
     {first_name:'robert',id:1, last_name:'William', email:'robertWilliam@gmail.com'},
     {first_name:'robert',id:2, last_name:'William', email:'robertWilliam@gmail.com'},
@@ -17,6 +28,23 @@ const SearchFriends = () => {
     {first_name:'robert',id:3, last_name:'William', email:'robertWilliam@gmail.com'},
     {first_name:'robert', id:4,last_name:'William', email:'robertwilliam@gmail.com'},
   ]
+
+  const emptyView=()=>(
+
+    <View style={styles.emptyView}>
+        <ICONS.AntDesign name={'search1'} size={40} color={COLORS.gray}/>
+      <Text style={styles.emptytxt}> No Result Found</Text>
+    </View>
+  )
+  
+  const emptyRequest=()=>(
+
+<View style={styles.emptyView}>
+    <ICONS.FontAwesome name={'users'} size={40} color={COLORS.gray}/>
+  <Text style={styles.emptytxt}> No Request Found</Text>
+</View>
+)
+
   return (
     <View>
         <Header/>
@@ -28,9 +56,30 @@ const SearchFriends = () => {
             <ICONS.AntDesign name={'search1'} size={20} color={COLORS.white}/>
           </TouchableOpacity>
           </View>
-          <Text style={styles.h1}>Friend Request</Text>
-          <FlatList showsVerticalScrollIndicator={false} data={data} renderItem={({item,index})=><RequestCard item={item} key={index}/>}/>
-        </View>
+          {
+          !!searchText?(
+          searchResult.length >0?
+          <>
+          <View style={styles.row}>
+            <Text style={styles.h1}>Search Results for "{searchText}"</Text>
+              <TouchableOpacity onPress={()=>{
+                setsearchResult([]);
+                setsearchText("")
+              }}>
+                <Text style={styles.clearText}>Clear</Text>
+              </TouchableOpacity>
+          </View>
+            <FlatList showsVerticalScrollIndicator={false} data={data} renderItem={({item,index})=><RequestCard item={item} type={"send"} key={index}/>}/>
+       
+          </>:emptyView() ): 
+          <>
+           <Text style={styles.h1}>Friend Request</Text>
+            { friendReuestList.length>0?
+            <FlatList showsVerticalScrollIndicator={false} data={data} renderItem={({item,index})=><RequestCard item={item} key={index}/>}/>
+        :emptyRequest()}
+      </>
+          }
+           </View>
     </View>
   )
 }
@@ -71,5 +120,24 @@ const styles = StyleSheet.create({
     height:'80%',
     alignItems:'center',
     justifyContent:'center'
+  },
+  row:{
+    justifyContent:'space-between',
+    flexDirection:'row'  
+  },
+  clearText:{
+    fontSize:18,
+    color:COLORS.green,
+    fontFamily:"Poppins-Regular"
+  },
+  emptyView:{
+  alignItems:'center',
+  justifyContent:'center',
+  height:hp(40)
+  },
+  emptytxt:{
+    fontSize:22,
+    marginTop:20
   }
+  
 })

@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     },
     title:{
         fontSize:18,
+        textTransform:"capitalize",
         color:COLORS.black,
         fontFamily:'Poppins-Regular',
     },
