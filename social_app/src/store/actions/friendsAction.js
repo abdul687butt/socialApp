@@ -3,6 +3,27 @@ import {httpRequest} from '../../config'
 import { store } from ".."
 import { setToast } from "./toastAction"
 
+export const getFriendRequest=(cb)=> async dispatch=>{
+    try {
+        const id = store.getState().user.id
+        console.log(id)
+        const token = store.getState().user.token
+        dispatch({type:types.GET_FRIEND_REQUEST.start})
+        const headers={'X-Authorization':token}
+        const res= await httpRequest.get('/friendrequests',{headers})
+       const result= res.data
+        if( res.status===200){
+            console.log("get friend request===============",result)
+            dispatch({type:types.GET_FRIEND_REQUEST.success, payload:result})
+            cb&& cb(result)
+        }else{
+            dispatch({type:types.GET_FRIEND_REQUEST.failed})
+        }
+    } catch (error) {
+        dispatch({type:types.GET_FRIEND_REQUEST.failed})
+        console.log(error)
+    }
+}
 export const sendFriendRequest=(id, cb)=> async dispatch=>{
     try {
         dispatch({type:types.SEND_FRIEND_REQUEST.start})
@@ -16,7 +37,8 @@ export const sendFriendRequest=(id, cb)=> async dispatch=>{
         if( res.status===201){
             dispatch({type:types.SEND_FRIEND_REQUEST.success})
             dispatch(setToast('success','Friend Request sent successfully'))
-            cb&& cb()
+            dispatch(getFriendRequest(()=>cb?cb():{}))
+            
         
         }
         
@@ -37,26 +59,7 @@ export const sendFriendRequest=(id, cb)=> async dispatch=>{
         console.log(error.code)
     }
 }
-export const getFriendRequest=(cb)=> async dispatch=>{
-    try {
-        const id = store.getState().user.id
-        console.log(id)
-        const token = store.getState().user.token
-        dispatch({type:types.GET_FRIEND_REQUEST.start})
-        const headers={'X-Authorization':token}
-        const res= await httpRequest.get('/friendrequests',{headers})
-       const result= res.data
-        if( res.status===200){
-            dispatch({type:types.GET_FRIEND_REQUEST.success, payload:result})
-            cb&& cb(result)
-        }else{
-            dispatch({type:types.GET_FRIEND_REQUEST.failed})
-        }
-    } catch (error) {
-        dispatch({type:types.GET_FRIEND_REQUEST.failed})
-        console.log(error)
-    }
-}
+
 
 
 
@@ -68,12 +71,13 @@ export const acceptFriendRequest=(id, cb)=> async dispatch=>{
         dispatch({type:types.ACCEPTS_FRIEND_REQUEST.start})
         const headers={'X-Authorization':token}
 
-        const res= await httpRequest.post(`/user/${id}`,{}, {headers})
-        console.log("res=======",res)
+        const res= await httpRequest.post(`/friendrequests/${id}`,{}, {headers})
+        console.log("accept =======",res)
         if( res.status===200){
             dispatch({type:types.ACCEPTS_FRIEND_REQUEST.success})
             dispatch(setToast('success','Congrats! you have a new friend'))
-            cb&& cb()
+            dispatch(getFriendRequest(()=>cb?cb():{}))
+            // cb&& cb()
         
         }else{
             dispatch({type:types.ACCEPTS_FRIEND_REQUEST.failed})
@@ -95,11 +99,11 @@ export const RejectFriendRequest=(id, cb)=> async dispatch=>{
         dispatch({type:types.REJECT_FRIEND_REQUEST.start})
         const headers={'X-Authorization':token}
 
-        const res= await httpRequest.delete(`/user/${id}`,{}, {headers})
+        const res= await httpRequest.delete(`/friendrequests/${id}`, {headers})
 
         if( res.status===200){
             dispatch({type:types.REJECT_FRIEND_REQUEST.success})
-            cb&& cb()
+            dispatch(getFriendRequest(()=>cb?cb():{}))
         
         }else{
             dispatch({type:types.REJECT_FRIEND_REQUEST.failed})
