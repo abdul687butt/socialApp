@@ -1,33 +1,18 @@
-import { FlatList, StyleSheet, Text, TextInput, Touchable, TouchableOpacity, View } from 'react-native'
+import { FlatList, 
+  Keyboard, StyleSheet, Text, TextInput, Touchable, TouchableOpacity, View } from 'react-native'
 import React,{useState, useEffect} from 'react'
 import Header from '../component/header'
 import { COLORS, hp, ICONS, wp } from '../constants'
-// import Card1 from '../component/card/card1'
 import RequestCard from '../component/card/requestCard'
+import {connect} from 'react-redux'
+import{setToast, searchFriend} from '../store/actions'
+import {Loader} from '../component/loader'
 
-const SearchFriends = () => {
+const SearchFriends = (props) => {
   const [searchText, setsearchText] = useState('')
-  const [searchResult, setsearchResult] = useState([
-    {first_name:'robert',id:1, last_name:'William', email:'robertWilliam@gmail.com'},
-    {first_name:'robert',id:2, last_name:'William', email:'robertWilliam@gmail.com'},
-    {first_name:'robert',id:3, last_name:'William', email:'robertWilliam@gmail.com'},
-    {first_name:'robert', id:4,last_name:'William', email:'robertWilliam@gmail.com'},
-    {first_name:'robert',id:1, last_name:'William', email:'robertWilliam@gmail.com'},
-    {first_name:'robert',id:2, last_name:'William', email:'robertWilliam@gmail.com'},
-    {first_name:'robert',id:3, last_name:'William', email:'robertWilliam@gmail.com'},
-    {first_name:'robert', id:4,last_name:'William', email:'robertwilliam@gmail.com'},
-  ])
-  const [friendReuestList, setfriendReuestList] = useState([])
-  let data=[
-    {first_name:'robert',id:1, last_name:'William', email:'robertWilliam@gmail.com'},
-    {first_name:'robert',id:2, last_name:'William', email:'robertWilliam@gmail.com'},
-    {first_name:'robert',id:3, last_name:'William', email:'robertWilliam@gmail.com'},
-    {first_name:'robert', id:4,last_name:'William', email:'robertWilliam@gmail.com'},
-    {first_name:'robert',id:1, last_name:'William', email:'robertWilliam@gmail.com'},
-    {first_name:'robert',id:2, last_name:'William', email:'robertWilliam@gmail.com'},
-    {first_name:'robert',id:3, last_name:'William', email:'robertWilliam@gmail.com'},
-    {first_name:'robert', id:4,last_name:'William', email:'robertwilliam@gmail.com'},
-  ]
+  const [searchResult, setsearchResult] = useState([])
+  const [friendRequestList, setfriendRequestList] = useState([])
+  
 
   const emptyView=()=>(
 
@@ -45,9 +30,20 @@ const SearchFriends = () => {
 </View>
 )
 
+const handleSearch=()=>{
+
+  if(!searchText){
+    props.setToast('error','Please enter something to search')
+  }else{
+    Keyboard.dismiss()
+    props.searchFriend(searchText,(data)=>setsearchResult(data))
+  }
+}
+
   return (
     <View>
         <Header/>
+        {props.isLoading && <Loader/>}
         <View style={styles.container}>
           <Text style={styles.h1}>Search Friends</Text>
           <View style={styles.input}>
@@ -69,13 +65,13 @@ const SearchFriends = () => {
                 <Text style={styles.clearText}>Clear</Text>
               </TouchableOpacity>
           </View>
-            <FlatList showsVerticalScrollIndicator={false} data={data} renderItem={({item,index})=><RequestCard item={item} type={"send"} key={index}/>}/>
+            <FlatList showsVerticalScrollIndicator={false} data={searchResult} renderItem={({item,index})=><RequestCard item={item} type={"send"} key={index}/>}/>
        
           </>:emptyView() ): 
           <>
            <Text style={styles.h1}>Friend Request</Text>
-            { friendReuestList.length>0?
-            <FlatList showsVerticalScrollIndicator={false} data={data} renderItem={({item,index})=><RequestCard item={item} key={index}/>}/>
+            { friendRequestList.length>0?
+            <FlatList showsVerticalScrollIndicator={false} data={friendRequestList} renderItem={({item,index})=><RequestCard item={item} key={index}/>}/>
         :emptyRequest()}
       </>
           }
@@ -84,7 +80,13 @@ const SearchFriends = () => {
   )
 }
 
-export default SearchFriends
+const mapStateToProps=props=>{
+  return{
+    isLoading:props.friends.isLoading
+  }
+}
+
+export default  connect(mapStateToProps,{setToast, searchFriend})( SearchFriends)
 
 const styles = StyleSheet.create({
   h1:{

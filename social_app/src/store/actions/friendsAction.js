@@ -100,12 +100,11 @@ export const searchFriend=(string, cb)=> async dispatch=>{
         dispatch({type:types.SEARCH_FRIENDS.start})
         const headers={'X-Authorization':token}
 
-        const res= await httpRequest.post(`search?q=Ash%20${string}&limit=20&offset=0`,{}, {headers})
+        const res= await httpRequest.get(`search?q=${string}&limit=20&offset=0`,{headers})
 
         if( res.status===200){
             dispatch({type:types.SEARCH_FRIENDS.success, payload:res.data})
-          
-            cb&& cb()
+            cb&& cb(res.data)
         
         }else{
             dispatch({type:types.SEARCH_FRIENDS.failed})
