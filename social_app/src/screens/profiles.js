@@ -2,14 +2,21 @@ import React,{useState, useEffect} from 'react'
 import Header from '../component/header'
 import { COLORS, hp, ICONS, wp } from '../constants'
 import {  StyleSheet, Text, View } from 'react-native'
+import {connect} from 'react-redux'
+import {getProfile} from '../store/actions'
 
-const Profile = () => {
-  const [data, setdata] = useState({
-      user_id: 2,
-      first_name: "ariyaa",
-      last_name: "albert",
-      email: "ariyaalbert@gmail.com"
-  })
+const Profile = (props) => {
+  const [data, setdata] = useState({})
+
+  useEffect(() => {
+   if(!Object.keys(props.user).length){
+     props.getProfile(data=>setdata(data))
+   }else{
+     setdata(props.user)
+   }
+  }, [Object.keys(props.user).length])
+  
+
   return (
     <View>
   <Header/>
@@ -17,7 +24,7 @@ const Profile = () => {
   <Text style={styles.h1}>Profile Details</Text>
 
       <View style={styles.avatar}>
-            <Text style={styles.avatarText}>{data.first_name.slice(0,1)} {data.last_name.slice(0,1)}</Text>
+            <Text style={styles.avatarText}>{  data.first_name&& data.first_name.slice(0,1)} {data.last_name&& data.last_name.slice(0,1)}</Text>
         </View>
         <View>
 
@@ -29,7 +36,14 @@ const Profile = () => {
   )
 }
 
-export default Profile
+const mapStateToProps=(props)=>{
+  return{
+    isLoading:props.user.isLoading,
+    user:props.user
+  }
+}
+
+export default connect(mapStateToProps, {getProfile}) (Profile)
 
 const styles = StyleSheet.create({
   h1:{
