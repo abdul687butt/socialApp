@@ -11,7 +11,7 @@ export const signup=(data, cb)=> async dispatch=>{
      
        if(res.status===400){
         dispatch({type:types.SIGNUP.failed})
-         return   dispatch(setToast('error','Bad Request'))
+         return   dispatch(setToast('error',res))
         
         }
         if(res.status===500){
@@ -34,24 +34,24 @@ export const signup=(data, cb)=> async dispatch=>{
 export const login=(data,cb)=> async dispatch=>{
     try {
         dispatch({type:types.LOGIN.start})
-        const res= await httpRequest.post('/user',data)
-       const result= res.data
-     
-       if(res.status===400){
-        dispatch({type:types.LOGIN.failed})
-         return   dispatch(setToast('error','Bad Request'))
+        const res= await httpRequest.post('/login',data)
+        const result= res.data
+        console.log("run--------------------------",{ res})
         
-        }
-        if(res.status===500){
-            dispatch({type:types.LOGIN.failed})
-            return dispatch(setToast('error','Server Error'))
-        }
-        if(res.status===201){
+        if(res.status===200){
             dispatch({type:types.LOGIN.success, payload:result})
                 cb&& cb(result)
+        }else{
+            dispatch({type:types.LOGIN.failed})
+           
+
         }
+     
+        
     } catch (error) {
         dispatch({type:types.LOGIN.failed})
+        dispatch(setToast('error',error.message))
+        console.log(error)
     }
 }
 

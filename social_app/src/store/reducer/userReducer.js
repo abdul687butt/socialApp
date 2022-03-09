@@ -8,8 +8,8 @@ const initialState = {
 
 }
 
-export const userReducer = (state = initialState, action) => {
-	switch (action.type) {
+export const userReducer = (state = initialState, {type,payload}) => {
+	switch (type) {
 		case types.SIGNUP.start:
 			return { ...state, isLoading:true }
 		case types.SIGNUP.success:

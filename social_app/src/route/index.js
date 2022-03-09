@@ -46,7 +46,7 @@ class AppNavigatior extends Component {
 }
 
 const mapStateToProps = props =>{
-    // console.log(" props===========================", props)
+    console.log(" props===========================", props.toast.isToastShowing,)
     return{
       isToastShowing :props.toast.isToastShowing,
       toastConfig:props.toast.config

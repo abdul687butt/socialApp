@@ -11,16 +11,32 @@ import {Loader} from '../component'
 import {connect} from 'react-redux'
 import {COLORS} from '../constants';
 import {setToast, login} from '../store/actions'
+import { validateEmail } from '../utils/validation';
+
 
 const Login = (props) => {
     
   const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-  const handleSubmit=()=>{
+    const handleSubmit = () => {
 
-  }
-
+      try {
+        if (!email) throw 'Please Provide Email Address';
+        if (!validateEmail(email)) throw 'Invalid Email Address';
+        if (!password) throw 'Please Provide Password';
+        if (password && password.length<6) throw 'Invalid Password';
+       
+        let obj = {
+          email: email,
+          password: password
+        }
+        props.login(obj, ()=>props.navigation.replace('home'))
+  
+      } catch (error) {
+        props.setToast('error', error)
+      }
+    }
   return (
     <View style={styles.container}>
     {props.isLoading && <Loader/> }
@@ -45,7 +61,7 @@ const Login = (props) => {
     />
 
   
-    <TouchableHighlight  onPress={handleSubmit} style={styles.button}>
+    <TouchableHighlight  onPress={()=>handleSubmit()} style={styles.button}>
       <Text style={styles.buttonText}>Sign In</Text>
     </TouchableHighlight>
 
@@ -58,6 +74,7 @@ const Login = (props) => {
   </View> 
   )}
   const mapStateToProps=(props)=>{
+    console.log(props)
     return{
       isLoading:props.user.isLoading,
       
