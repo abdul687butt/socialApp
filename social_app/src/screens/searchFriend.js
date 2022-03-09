@@ -1,17 +1,32 @@
-import { FlatList, 
-  Keyboard, StyleSheet, Text, TextInput, Touchable, TouchableOpacity, View } from 'react-native'
 import React,{useState, useEffect} from 'react'
+
+import { FlatList, Keyboard, StyleSheet, Text, TextInput, Touchable, TouchableOpacity, View } from 'react-native'
+
 import Header from '../component/header'
-import { COLORS, hp, ICONS, wp } from '../constants'
 import RequestCard from '../component/card/requestCard'
-import {connect} from 'react-redux'
-import{setToast, searchFriend} from '../store/actions'
 import {Loader} from '../component/loader'
+import Card2 from '../component/card/card2'
+import { COLORS, hp, ICONS, wp } from '../constants'
+
+import {connect} from 'react-redux'
+import {setToast, searchFriend, getFriendRequest} from '../store/actions'
+
 
 const SearchFriends = (props) => {
   const [searchText, setsearchText] = useState('')
   const [searchResult, setsearchResult] = useState([])
   const [friendRequestList, setfriendRequestList] = useState([])
+
+  useEffect(() => {
+    if(!Object.keys(props.friendRequestList).length){
+      props.getFriendRequest(data=>setfriendRequestList(data))
+    }else{
+      setfriendRequestList(props.friendRequestList)
+      // console.log(props.friendRequestList)
+    }
+    
+  }, [Object.keys(props.friendRequestList).length])
+  
   
 
   const emptyView=()=>(
@@ -71,7 +86,7 @@ const handleSearch=()=>{
           <>
            <Text style={styles.h1}>Friend Request</Text>
             { friendRequestList.length>0?
-            <FlatList showsVerticalScrollIndicator={false} data={friendRequestList} renderItem={({item,index})=><RequestCard item={item} key={index}/>}/>
+            <FlatList showsVerticalScrollIndicator={false} data={friendRequestList} renderItem={({item,index})=><Card2 item={item} key={index}/>}/>
         :emptyRequest()}
       </>
           }
@@ -81,12 +96,15 @@ const handleSearch=()=>{
 }
 
 const mapStateToProps=props=>{
+  const {isLoading, friendRequestList}=props.friends
+  
   return{
-    isLoading:props.friends.isLoading
+     isLoading,
+    friendRequestList
   }
 }
 
-export default  connect(mapStateToProps,{setToast, searchFriend})( SearchFriends)
+export default  connect(mapStateToProps,{setToast, getFriendRequest, searchFriend})( SearchFriends)
 
 const styles = StyleSheet.create({
   h1:{

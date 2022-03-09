@@ -40,12 +40,13 @@ export const sendFriendRequest=(id, cb)=> async dispatch=>{
 export const getFriendRequest=(cb)=> async dispatch=>{
     try {
         const id = store.getState().user.id
+        console.log(id)
         const token = store.getState().user.token
         dispatch({type:types.GET_FRIEND_REQUEST.start})
         const headers={'X-Authorization':token}
-        const res= await httpRequest.get(`/user/${id}`,{headers})
+        const res= await httpRequest.get('/friendrequests',{headers})
        const result= res.data
-        if( result && typeof result ==='object'){
+        if( res.status===200){
             dispatch({type:types.GET_FRIEND_REQUEST.success, payload:result})
             cb&& cb(result)
         }else{
@@ -53,6 +54,7 @@ export const getFriendRequest=(cb)=> async dispatch=>{
         }
     } catch (error) {
         dispatch({type:types.GET_FRIEND_REQUEST.failed})
+        console.log(error)
     }
 }
 

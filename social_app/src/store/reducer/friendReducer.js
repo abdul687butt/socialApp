@@ -6,8 +6,8 @@ const initialState = {
     friendRequestList:[]
 }
 
-export const friendReducer = (state = initialState, action) => {
-	switch (action.type) {
+export const friendReducer = (state = initialState, {type,payload}) => {
+	switch (type) {
 		case types.SEND_FRIEND_REQUEST.start:
 			return { ...state, isLoading:true }
 		case types.SEND_FRIEND_REQUEST.success:
