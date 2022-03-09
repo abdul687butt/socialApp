@@ -8,7 +8,7 @@ import { toastReducer, friendReducer, userReducer} from './reducer'
 const persistConfig = {
     key: 'root',
     storage: AsyncStorage,
-    whitelist: []
+    whitelist: ['user']
   };
   
 

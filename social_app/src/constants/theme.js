@@ -10,7 +10,9 @@ export const COLORS={
     warning: '#ffc107',
     success: '#4bb543',
     info: '#6f6f6f',
-    disabled: '#c2c2c2'
+    disabled: '#c2c2c2',
+    black:"#000",
+    gray:"#a2a2a2"
 }
 
 
