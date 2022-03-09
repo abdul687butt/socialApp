@@ -13,7 +13,11 @@ const FriendList = (props) => {
   
   useEffect(() => {
     if(!Object.keys(props.friendList).length){
-      props.getFriends(data=>setfriendList(data))
+      props.getFriends(data=>{
+        if(data && typeof data==='object'){
+          setfriendList(data)
+        }
+      })
     }else{
       setfriendList(props.friendList)
      

@@ -1,8 +1,14 @@
-import { StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, Touchable, TouchableHighlight, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import {ICONS, COLORS, FONTS, hp, wp} from '../../constants'
+import {connect} from 'react-redux'
+import {logout} from '../../store/actions'
+import {useNavigation} from '@react-navigation/native'
 
-export const BottomTab = ({activePage, setActivePage}) => {
+ const BottomTab = ({activePage, setActivePage,  logout}) => {
+
+  const navigation=useNavigation()
+
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={()=>setActivePage('profile')}>
@@ -25,18 +31,19 @@ export const BottomTab = ({activePage, setActivePage}) => {
           </View>
       </TouchableOpacity>
          
-      <TouchableOpacity onPress={()=>{}}>
+      <TouchableHighlight underlayColor={COLORS.green} onPress={()=>logout(()=>navigation.replace('login'))}>
           <View style={[styles.tab, activePage==="logout"&&{backgroundColor:COLORS.green}]}>
             <ICONS.AntDesign name={'logout'} size={ activePage==="logout"?24: 18} color={COLORS.white}/>
             <Text style={styles.tabText}>Logout</Text>
           </View>
-      </TouchableOpacity>
+      </TouchableHighlight>
 
      
     </View>
   )
 }
 
+export default connect(null, {logout})(BottomTab)
 
 
 const styles = StyleSheet.create({
@@ -54,7 +61,7 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         height:'100%',
         width:wp(25),
-        borderRadius:20,
+        borderRadius:25,
         // elevation:10
 
     },

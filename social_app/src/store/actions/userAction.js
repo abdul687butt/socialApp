@@ -55,12 +55,13 @@ export const login=(data,cb)=> async dispatch=>{
     }
 }
 
-export const logout=(cb)=> async dispatch=>{
+export const logout=(cb)=> dispatch=>{
     try {
-        dispatch({type:types.LOGIN.success})  
-        cb&& cb(result)
+        console.log("logout=============")
+        dispatch({type:types.LOGOUT.success})  
+        cb&& cb()
     } catch (error) {
-        dispatch({type:types.LOGIN.failed})
+        dispatch({type:types.LOGOUT.failed})
     }
 }
 

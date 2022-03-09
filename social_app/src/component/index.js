@@ -1,3 +1,3 @@
 export * from './loader'
 export * from './toast'
-export * from './bottomTab'
+export {default as BottomTab} from './bottomTab'
