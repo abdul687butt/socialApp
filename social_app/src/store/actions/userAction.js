@@ -68,17 +68,25 @@ export const logout=(cb)=> async dispatch=>{
 export const getProfile=(cb)=> async dispatch=>{
     try {
         const id = store.getState().user.id
+        const token = store.getState().user.token
+        
         dispatch({type:types.GET_PROFILE.start})
-        const res= await httpRequest.gett(`/user/${id}`)
-       const result= res.data
-        if( result && typeof result ==='object'){
+        
+        const headers={'X-Authorization':token}
+        const res= await httpRequest.get(`/user/${id}`,{headers})
+        const result= res.data
+        console.log("res========================",res)
+        
+        if( res.status===200){
             dispatch({type:types.GET_PROFILE.success, payload:result})
             cb&& cb(result)
         }else{
             dispatch({type:types.GET_PROFILE.failed})
         }
     } catch (error) {
+        dispatch(setToast('error',error.message))
         dispatch({type:types.GET_PROFILE.failed})
+        console.log("err================",error)
     }
 }
 

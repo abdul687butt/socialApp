@@ -9,6 +9,7 @@ const Profile = (props) => {
   const [data, setdata] = useState({})
 
   useEffect(() => {
+    console.log("Object.keys(props.user).length",Object.keys(props.user).length)
    if(!Object.keys(props.user).length){
      props.getProfile(data=>setdata(data))
    }else{
@@ -39,7 +40,7 @@ const Profile = (props) => {
 const mapStateToProps=(props)=>{
   return{
     isLoading:props.user.isLoading,
-    user:props.user
+    user:props.user.user
   }
 }
 
@@ -93,4 +94,6 @@ txt:{
     fontSize:16,
     textAlign:'center',
 },
+
+
 })
