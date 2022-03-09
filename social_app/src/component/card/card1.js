@@ -3,16 +3,16 @@ import React from 'react'
 import { COLORS, hp, wp } from '../../constants'
 
 const Card1 = ({item,index}) => {
-    const{first_name,last_name, email}= item
+    const{user_givenname,user_familyname, user_email}= item
   return (
     <View key={index} style={styles.card}>
         <View style={styles.avatar}>
-            <Text style={styles.avatarText}>{first_name.slice(0,1)} {last_name.slice(0,1)}</Text>
+            <Text style={styles.avatarText}>{user_givenname.slice(0,1)} {user_familyname.slice(0,1)}</Text>
         </View>
         <View>
 
-            <Text style={styles.title}>{first_name} {last_name}</Text>
-            <Text style={styles.txt}>{email}</Text>
+            <Text style={styles.title}>{user_givenname} {user_familyname}</Text>
+            <Text style={styles.txt}>{user_email}</Text>
         </View>
     </View>
   )

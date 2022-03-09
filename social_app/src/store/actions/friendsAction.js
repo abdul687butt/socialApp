@@ -145,7 +145,7 @@ export const getFriends=(cb)=> async dispatch=>{
         dispatch({type:types.GET_FRIENDS.start})
         const headers={'X-Authorization':token}
 
-        const res= await httpRequest.post(`/user/${id}/friends`,{}, {headers})
+        const res= await httpRequest.get(`/user/${id}/friends`, {headers})
 
         if( res.status===200){
             dispatch({type:types.GET_FRIENDS.success,payload:res.data})
